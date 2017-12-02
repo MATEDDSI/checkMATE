@@ -1,0 +1,3 @@
+[submodule "MATE"]
+	path = MATE
+	url = https://github.com/MATEDDSI/MATE.git
