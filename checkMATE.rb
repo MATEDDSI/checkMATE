@@ -4,7 +4,7 @@ doc = <<DOCOPT
 checkMATE.
 
 Usage:
-	#{__FILE__} consejo contra <jugador>
+	#{__FILE__} consejo contra <jugador> <juego>
 	
 Options:
 	-h --help	Muestra esta pantalla.
