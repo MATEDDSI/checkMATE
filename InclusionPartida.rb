@@ -1,4 +1,5 @@
 #!/bin/ruby
+#!/bin/ruby
 
 require 'sqlite3'
 
@@ -6,7 +7,6 @@ class InclusionPartida
 
 @@Nombre
 @@MATE
-@@Numpartidas = 0
 
   def initialize(string)
     begin
@@ -24,7 +24,7 @@ class InclusionPartida
     @@MATE.execute("INSERT INTO Partida VALUES(#{tmp})")
     tiempo = Time.now
     fecha = tiempo.strftime("%d/%m/%Y")
-    @@MATE.execute(" INSERT INTO JUEGA  VALUES(#{idJugador},#{tmp},#{puntuacion},#{fecha})")
+    @@MATE.execute(" INSERT INTO JUEGA  VALUES('#{idJugador.to_s}',#{tmp},#{puntuacion},'#{fecha.to_s}')")
     end
   end
 
@@ -39,29 +39,19 @@ end
 
 
 
-mate = InclusionPartida.new("./MATE/MATE.db")
+mate = InclusionPartida.new("./MATE.db")
 
 puts "Insertar identificador del jugador"
 id = gets.chomp
-#
+
 puts "Insertar puntuación"
 punt = gets.chomp
 
-# puts "Insertar puntuacion del jugador 2"
-# jug2 = gets.chomp
-#
-#
-# mate.InsertaPartida(id,punt)
-# 
-# mate.LeerPartidas
 
+mate.InsertaPartida(id,punt)
 
-# CREATE TRIGGER puntuacion BEFORE INSERT
-# ON JUEGA FOR EACH ROW WHEN puntuacion1 < 0 || puntuacion2 < 0
-# BEGIN
-#
-#
 
 
 
 end
+
