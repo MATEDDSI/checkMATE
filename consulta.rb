@@ -29,7 +29,7 @@ module Consulta
 		end
 	end
 
-	def Consulta.mostrarID(id)
+	def Consulta.mostrarID(id_i)
 		puts "Partida #{id_i["idPartida"]}:"
 
 		nomypun_list = sacarNombreJugsYPuntuaciones(id_i)
