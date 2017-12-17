@@ -1,5 +1,4 @@
 #!/bin/ruby
-#!/bin/ruby
 
 require 'sqlite3'
 
@@ -15,16 +14,12 @@ class InclusionPartida
     end
   end
 
-  def InsertaPartida(idJugador,puntuacion)
+  def InsertaEnJuega(idJugador,idPartida,puntuacion)
     begin
-    @@numpartidas = @@MATE.execute("select max(id) from Partida")
-    value =  @@numpartidas[0][0]
-    tmp = value.to_i
-    tmp = tmp.next
-    @@MATE.execute("INSERT INTO Partida VALUES(#{tmp})")
+
     tiempo = Time.now
     fecha = tiempo.strftime("%d/%m/%Y")
-    @@MATE.execute(" INSERT INTO JUEGA  VALUES('#{idJugador.to_s}',#{tmp},#{puntuacion},'#{fecha.to_s}')")
+    @@MATE.execute(" INSERT INTO JUEGA  VALUES('#{idJugador.to_s}',#{idPartida},#{puntuacion},'#{fecha.to_s}')")
     end
   end
 
@@ -35,23 +30,45 @@ class InclusionPartida
     end
   end
 
+  def InsertaPartida
+    numpartidas = @@MATE.execute("select max(id) from Partida")
+    value =  @@numpartidas[0][0]
+    tmp = value.to_i
+    tmp = tmp.next
+    @@MATE.execute("INSERT INTO Partida VALUES(#{tmp})")
+    return tmp
+  end
+
+  end
+
+end
+
+
+
+mate = InclusionPartida.new("./Mate.db")
+
+puts "Numero de jugadores"
+num = gets.chomp
+
+idPartida = mate.InsertaPartida
+
+for  i in 1..num
+
+  puts "Insertar identificador del jugador"
+  id = gets.chomp
+
+  puts "Insertar puntuación"
+  punt = gets.chomp
+
+  mate.InsertaPartida(id,punt,idPartida)
+
 end
 
 
 
-mate = InclusionPartida.new("./MATE/Mate.db")
 
-puts "Insertar identificador del jugador"
-id = gets.chomp
-
-puts "Insertar puntuación"
-punt = gets.chomp
-
-
-mate.InsertaPartida(id,punt)
 
 
 
 
 end
-
