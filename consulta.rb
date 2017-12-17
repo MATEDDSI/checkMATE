@@ -3,41 +3,7 @@ module Consulta
 	def Consulta.consultar(juego)
 		id_list = sacarIDs(juego)
 		id_list.each do |id_i|
-			puts "Partida #{id_i["idPartida"]}:"
-
-			nomypun_list = sacarNombreJugsYPuntuaciones(id_i)
-			print "   " , "Jugadores: "
-			cont = 0
-			nomypun_list.each do |nomypun_i|
-				if nomypun_list.length == cont
-					print nomypun_i["nombreJugador"]
-				else
-					print nomypun_i["nombreJugador"] , "vs. "
-				end
-				cont = cont +1
-			end
-			print "\n"
-
-			print "   " , "Puntuaciones: "
-			cont = 0
-			nomypun_list.each do |nomypun_i|
-				if nomypun_list.length == cont
-					print nomypun_i["puntuacion"]
-				else
-					print nomypun_i["puntuacion"] , "-"
-				end
-				cont = cont +1
-			end
-			print "\n"
-
-			
-			nomypun_list.each do |nomypun_i|
-				puts "     " + nomypun_i["nombreJugador"]
-				atrval_list = sacarAtributosValores(id_i,nomypun_i["nombreJugador"])
-				atrval_list.each do |atrval_i|
-					puts "     " , atrval_i["nombreAtributo"] , " -> " , atrval_i["valor"]
-				end
-			end
+			mostrarID(id_i)
 		end
 	end
 
@@ -56,44 +22,55 @@ module Consulta
 			end
 
 			res_id.each do |id_i|
-			puts "Partida #{id_i["idPartida"]}:"
-
-			nomypun_list = sacarNombreJugsYPuntuaciones(id_i)
-			print "   " , "Jugadores: "
-			cont = 0
-			nomypun_list.each do |nomypun_i|
-				if nomypun_list.length == cont
-					print nomypun_i["nombreJugador"]
-				else
-					print nomypun_i["nombreJugador"] , "vs. "
-				end
-				cont = cont +1
+				mostrarID(id_i)
 			end
-			print "\n"
-
-			print "   " , "Puntuaciones: "
-			cont = 0
-			nomypun_list.each do |nomypun_i|
-				if nomypun_list.length == cont
-					print nomypun_i["puntuacion"]
-				else
-					print nomypun_i["puntuacion"] , "-"
-				end
-				cont = cont +1
-			end
-			print "\n"
-
-			
-			nomypun_list.each do |nomypun_i|
-				puts "     " + nomypun_i["nombreJugador"]
-				atrval_list = sacarAtributosValores(id_i,nomypun_i["nombreJugador"])
-				atrval_list.each do |atrval_i|
-					puts "     " , atrval_i["nombreAtributo"] , " -> " , atrval_i["valor"]
-				end
-			end
-		end
 		else
 			consultarCondicion(juego,'diferencia',0)
+		end
+	end
+
+	def Consulta.mostrarID(id)
+		puts "Partida #{id_i["idPartida"]}:"
+
+		nomypun_list = sacarNombreJugsYPuntuaciones(id_i)
+		print "   " , "Jugadores: "
+		cont = 0
+		nomypun_list.each do |nomypun_i|
+			if nomypun_list.length == cont
+				print nomypun_i["nombreJugador"]
+			else
+				print nomypun_i["nombreJugador"] , "vs. "
+			end
+			cont = cont +1
+		end
+		print "\n"
+
+		print "   " , "Puntuaciones: "
+		cont = 0
+		nomypun_list.each do |nomypun_i|
+			if nomypun_list.length == cont
+				print nomypun_i["puntuacion"]
+			else
+				print nomypun_i["puntuacion"] , "-"
+			end
+			cont = cont +1
+		end
+		print "\n"
+
+		
+		nomypun_list.each do |nomypun_i|
+			puts "     " + nomypun_i["nombreJugador"]
+			atrval_list = sacarAtributosValores(id_i,nomypun_i["nombreJugador"])
+			atrval_list.each do |atrval_i|
+				puts "     " , atrval_i["nombreAtributo"] , " -> " , atrval_i["valor"]
+			end
+		end
+	end
+
+	def Consulta.restriccion(juego,atributo,valor)
+		id_list = restringir(juego,atributo,valor)
+		id_list.each do |id_i|
+			mostrarID(id_i)
 		end
 	end
 
@@ -165,4 +142,25 @@ module Consulta
 			db.close if db
 		end
 	end
+
+	def Consulta.restringir(juego,atributo,valor_p)
+		require 'sqlite3'
+		begin
+			db = SQLite3::Database.open "MATE/Mate.db"
+			db.results_as_hash = true
+			db.execute <<-QUERY
+			SELECT idPartida FROM pertenece
+			WHERE nombreJuego = '#{juego}'
+			INTERSECT
+			SELECT idPartida FROM rellena
+			WHERE nombreAtributo = '#{atributo}' AND valor = '#{valor_p}'; 
+			QUERY
+		rescue SQLite3::Exception => e
+			puts "Error al acceder a la base de datos: "
+			puts e
+		ensure
+			db.close if db
+		end
+	end
+
 end

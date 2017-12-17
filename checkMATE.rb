@@ -25,6 +25,7 @@ begin
 		require_relative "consulta"
 		Consulta.consultar(args["<juego>"]);
 #		Consulta.consultarCondicion(args["<juego>"],args["<diferencia/igual>"],args["<numero>"]);
+#		Consulta.restriccion(args["<juego>"],args["<atributo>"],args["<valor>"])
 	end
 rescue Docopt::Exit => e
 	puts e.message
