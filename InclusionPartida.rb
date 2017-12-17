@@ -60,7 +60,7 @@ for  i in 1..num
   puts "Insertar puntuación"
   punt = gets.chomp
 
-  mate.InsertaPartida(id,punt,idPartida)
+  mate.InsertaEnJuega(id,punt,idPartida)
 
 end
 
