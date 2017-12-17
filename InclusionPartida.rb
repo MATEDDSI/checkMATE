@@ -6,6 +6,7 @@ class InclusionPartida
 
 @@Nombre
 @@MATE
+@@Numpartidas = 0
 
   def initialize(string)
     begin
@@ -14,12 +15,16 @@ class InclusionPartida
     end
   end
 
-  def InsertaPartida(idJugador,puntuacion1,puntuacion2)
+  def InsertaPartida(idJugador,puntuacion)
     begin
-    @@MATE.execute("INSERT INTO Partida VALUES(#{idJugador})")
+    @@numpartidas = @@MATE.execute("select max(id) from Partida")
+    value =  @@numpartidas[0][0]
+    tmp = value.to_i
+    tmp = tmp.next
+    @@MATE.execute("INSERT INTO Partida VALUES(#{tmp})")
     tiempo = Time.now
     fecha = tiempo.strftime("%d/%m/%Y")
-    @@MATE.execute(" INSERT INTO JUEGA  VALUES(#{idJugador},#{puntuacion1},#{puntuacion2},#{fecha})")
+    @@MATE.execute(" INSERT INTO JUEGA  VALUES(#{idJugador},#{tmp},#{puntuacion},#{fecha})")
     end
   end
 
@@ -36,19 +41,19 @@ end
 
 mate = InclusionPartida.new("./MATE/MATE.db")
 
-puts "Insertar identificador"
+puts "Insertar identificador del jugador"
 id = gets.chomp
+#
+puts "Insertar puntuación"
+punt = gets.chomp
 
-puts "Insertar puntuación del jugador 1"
-jug1 = gets.chomp
-
-puts "Insertar puntuacion del jugador 2"
-jug2 = gets.chomp
-
-
-mate.InsertaPartida(id,jug1,jug2)
-
-mate.LeerPartidas
+# puts "Insertar puntuacion del jugador 2"
+# jug2 = gets.chomp
+#
+#
+# mate.InsertaPartida(id,punt)
+# 
+# mate.LeerPartidas
 
 
 # CREATE TRIGGER puntuacion BEFORE INSERT
