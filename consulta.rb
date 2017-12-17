@@ -13,7 +13,7 @@ module Consulta
 			res_id = {}
 			id_list = sacarIDs(juego)
 			id_list.each do |id_i|
-				nomypun_list = sacarNombreJugsYPuntuaciones(id_i)
+				nomypun_list = sacarNombreJugsYPuntuaciones(id_i["idPartida"])
 				p_a = nomypun_list["puntuacion"][0]
 				p_b = nomypun_list["puntuacion"][1]
 				if( (p_a - p_b)*(p_a - p_b) < numero*numero)
@@ -32,7 +32,7 @@ module Consulta
 	def Consulta.mostrarID(id_i)
 		puts "Partida #{id_i["idPartida"]}:"
 
-		nomypun_list = sacarNombreJugsYPuntuaciones(id_i)
+		nomypun_list = sacarNombreJugsYPuntuaciones(id_i["idPartida"])
 		print "   " , "Jugadores: "
 		cont = 0
 		nomypun_list.each do |nomypun_i|
@@ -60,7 +60,7 @@ module Consulta
 		
 		nomypun_list.each do |nomypun_i|
 			puts "     " + nomypun_i["nombreJugador"]
-			atrval_list = sacarAtributosValores(id_i,nomypun_i["nombreJugador"])
+			atrval_list = sacarAtributosValores(id_i["idPartida"],nomypun_i["nombreJugador"])
 			atrval_list.each do |atrval_i|
 				puts "     " , atrval_i["nombreAtributo"] , " -> " , atrval_i["valor"]
 			end
@@ -117,23 +117,6 @@ module Consulta
 			db.execute <<-QUERY
 			SELECT nombreAtributo, valor FROM rellena
 			WHERE idPartida = '#{id}' AND nombreJugador = '#{nombreJug}';
-			QUERY
-		rescue SQLite3::Exception => e
-			puts "Error al acceder a la base de datos: "
-			puts e
-		ensure
-			db.close if db
-		end
-	end
-
-	def Consulta.sacarIDnombreJugPuntuacion(id)
-		require 'sqlite3'
-		begin
-			db = SQLite3::Database.open "MATE/Mate.db"
-			db.results_as_hash = true
-			db.execute <<-QUERY
-			SELECT idPartida, nombreJugador, puntuacion FROM juega
-			WHERE idPartida = '#{id}' AND nombreJugador = '#{nombreJug}' AND puntuacion = '#{}';
 			QUERY
 		rescue SQLite3::Exception => e
 			puts "Error al acceder a la base de datos: "
