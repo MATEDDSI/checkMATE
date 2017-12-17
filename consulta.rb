@@ -42,7 +42,7 @@ module Consulta
 	end
 
 
-	def Consulta.consultar(juego,condicion,numero)
+	def Consulta.consultarCondicion(juego,condicion,numero)
 		if condicion == 'diferencia'
 			res_id = {}
 			id_list = sacarIDs(juego)
@@ -93,7 +93,7 @@ module Consulta
 			end
 		end
 		else
-			puts "No implementado."
+			consultarCondicion(juego,'diferencia',0)
 		end
 	end
 
