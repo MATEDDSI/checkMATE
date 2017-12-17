@@ -39,7 +39,7 @@ end
 
 
 
-mate = InclusionPartida.new("./MATE/MATE.db")
+mate = InclusionPartida.new("./MATE/Mate.db")
 
 puts "Insertar identificador del jugador"
 id = gets.chomp
