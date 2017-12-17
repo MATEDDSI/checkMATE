@@ -58,7 +58,7 @@ end
 
 
 
-mate = InclusionPartida.new("./Mate.db")
+mate = InclusionPartida.new(".MATE/Mate.db")
 
 puts "Numero de jugadores"
 num = gets.chomp
