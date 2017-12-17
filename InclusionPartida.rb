@@ -51,11 +51,11 @@ mate.InsertaPartida(id,jug1,jug2)
 mate.LeerPartidas
 
 
-CREATE TRIGGER puntuacion BEFORE INSERT
-ON JUEGA FOR EACH ROW WHEN puntuacion1 < 0 || puntuacion2 < 0
-BEGIN
-
-
+# CREATE TRIGGER puntuacion BEFORE INSERT
+# ON JUEGA FOR EACH ROW WHEN puntuacion1 < 0 || puntuacion2 < 0
+# BEGIN
+#
+#
 
 
 
