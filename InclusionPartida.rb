@@ -35,9 +35,28 @@ end
 
 
 mate = InclusionPartida.new("./MATE/MATE.db")
-# mate.InsertaPartida(1,2,2)
-# mate.InsertaPartida(2,0,1)
+
+puts "Insertar identificador"
+id = gets.chomp
+
+puts "Insertar puntuación del jugador 1"
+jug1 = gets.chomp
+
+puts "Insertar puntuacion del jugador 2"
+jug2 = gets.chomp
+
+
+mate.InsertaPartida(id,jug1,jug2)
 
 mate.LeerPartidas
+
+
+CREATE TRIGGER puntuacion BEFORE INSERT
+ON JUEGA FOR EACH ROW WHEN puntuacion1 < 0 || puntuacion2 < 0
+BEGIN
+
+
+
+
 
 end
