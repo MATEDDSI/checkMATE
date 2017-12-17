@@ -16,7 +16,7 @@ class InclusionPartida
     end
   end
 
-  def InsertaEnJuega(idJugador,puntuacion)
+  def InsertaEnJuega(idJugador,puntuacion,nombreJuego)
     begin
 
     if @idPartida == 0
@@ -26,6 +26,7 @@ class InclusionPartida
       tmp = tmp.next
       @idPartida = tmp
       @@MATE.execute("INSERT INTO Partida VALUES(#{@idPartida})")
+      @@MATE.execute(" INSERT INTO Pertenece  VALUES(#{@idPartida},'#{nombreJuego}')")
     end
 
     tiempo = Time.now
@@ -41,29 +42,19 @@ class InclusionPartida
     end
   end
 
-  def InsertaPartida
-    # begin
-    numpartidas = @@MATE.execute("select max(id) from Partida")
-    value =  @@numpartidas[0][0]
-    tmp = value.to_i
-    tmp = tmp.next
-    @idPartida = tmp
-    @@MATE.execute("INSERT INTO Partida VALUES(#{@idPartida})")
-    # end
-  end
-
-
 
 end
 
 
 
-mate = InclusionPartida.new(".MATE/Mate.db")
+mate = InclusionPartida.new("./Mate.db")
 
+puts "Juego?"
+juego = gets.chomp
 puts "Numero de jugadores"
 num = gets.chomp
 num = num.to_i
-# mate.InsertaPartida
+
 
   for  i in 1..num
 
@@ -73,15 +64,10 @@ num = num.to_i
     puts "Insertar puntuación"
     punt = gets.chomp
 
-    mate.InsertaEnJuega(id,punt)
+    mate.InsertaEnJuega(id,punt,juego)
 
   end
 
 
 
 
-
-
-
-
-end
