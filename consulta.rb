@@ -33,7 +33,7 @@ module Consulta
 	end
 
 	def Consulta.mostrarID(id)
-		nomypun_list = sacarNombreJugsYPuntuaciones(id["idPartida"])
+		nomypun_list = sacarNombreJugsPuntuacionesYFecha(id["idPartida"])
 		if( nomypun_list.empty? )
 			puts "No existe la Partida #{id["idPartida"]}."
 		else
@@ -60,8 +60,7 @@ module Consulta
 				end
 				cont = cont +1
 			end
-			print "\n"
-
+			puts
 		
 			nomypun_list.each do |nomypun_i|
 				puts "     " + nomypun_i["nombreJugador"] + ":"
@@ -70,6 +69,8 @@ module Consulta
 					puts "       " + atrval_i["nombreAtributo"] + " -> " + atrval_i["valor"]
 				end
 			end
+
+			puts "   " + "Fecha: " + nomypun_list[0]["fecha"]
 		end
 		
 	end
@@ -99,13 +100,13 @@ module Consulta
 
 	end
 
-	def Consulta.sacarNombreJugsYPuntuaciones(id)
+	def Consulta.sacarNombreJugsPuntuacionesYFecha(id)
 		require 'sqlite3'
 		begin
 			db = SQLite3::Database.open "MATE/Mate.db"
 			db.results_as_hash = true
 			db.execute <<-QUERY
-			SELECT nombreJugador, puntuacion FROM juega
+			SELECT nombreJugador, puntuacion, fecha FROM juega
 			WHERE idPartida = '#{id}';
 			QUERY
 		rescue SQLite3::Exception => e
