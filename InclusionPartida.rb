@@ -16,7 +16,24 @@ class InclusionPartida
     end
   end
 
-  def InsertaEnJuega(idJugador,puntuacion,nombreJuego)
+	def ManejaArgumentos(args)
+		juego = args[1]
+		jug1 = args[2]
+		pun1 = args[3]
+		args_def = args.drop(4)
+		ManejaInsercion(juego,jug1,pun1,args_def)
+	end
+
+	def ManejaInsercion(juego, jug1, pun1, *args)
+		InsertaPartida(jug1,pun1,juego)
+		args_def = args[0]
+		while( !args_def.empty?) do
+			InsertaPartida(args_def[0],args_def[1],juego)
+			args_def = args_def.drop(2)
+		end
+	end
+
+  def InsertaPartida(nombreJugador,puntuacion,nombreJuego)
     begin
 
     if @idPartida == 0
@@ -25,49 +42,23 @@ class InclusionPartida
       tmp = value.to_i
       tmp = tmp.next
       @idPartida = tmp
-      @@MATE.execute("INSERT INTO Partida VALUES(#{@idPartida})")
-      @@MATE.execute(" INSERT INTO Pertenece  VALUES(#{@idPartida},'#{nombreJuego}')")
+      @@MATE.execute("INSERT INTO Partida(id) VALUES(#{@idPartida})")
+      @@MATE.execute(" INSERT INTO Pertenece(idPartida,nombreJuego)  VALUES(#{@idPartida},'#{nombreJuego}')")
     end
 
     tiempo = Time.now
     fecha = tiempo.strftime("%d/%m/%Y")
-    @@MATE.execute(" INSERT INTO JUEGA  VALUES('#{idJugador.to_s}',#{@idPartida},#{puntuacion},'#{fecha.to_s}')")
+    @@MATE.execute(" INSERT INTO Juega(nombreJugador, idPartida, puntuacion, fecha)  VALUES('#{nombreJugador}',#{@idPartida},#{puntuacion.to_i},'#{fecha.to_s}')")
     end
   end
 
   def LeerPartidas
     begin
     @@MATE.execute("select * from Juega") do |result|
-    puts result
+   	 puts result
     end
   end
 
 
 end
-
-
-
-mate = InclusionPartida.new("./Mate.db")
-
-puts "Juego?"
-juego = gets.chomp
-puts "Numero de jugadores"
-num = gets.chomp
-num = num.to_i
-
-
-  for  i in 1..num
-
-    puts "Insertar identificador del jugador"
-    id = gets.chomp
-
-    puts "Insertar puntuación"
-    punt = gets.chomp
-
-    mate.InsertaEnJuega(id,punt,juego)
-
-  end
-
-
-
-
+end

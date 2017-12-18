@@ -10,6 +10,7 @@ Usage:
 	#{__FILE__} consulta <juego> diferencia <numero>
 	#{__FILE__} consulta <juego> donde <atributo> <valor>
 	#{__FILE__} consulta ID <numero>
+	#{__FILE__} inserta <juego> <nombre_jugador_1> <puntuacion_1> <nombre_jugador_2> <puntuacion_2> ... 
 	
 Options:
 	-h --help	Muestra esta pantalla.
@@ -40,6 +41,12 @@ begin
 		else
 			Consulta.consultar(args["<juego>"]);
 		end
+	end
+
+	if args["inserta"]
+		require_relative "InclusionPartida"
+		mate = InclusionPartida.new("./MATE/Mate.db")
+		mate.ManejaArgumentos(ARGV)
 	end
 
 rescue Docopt::Exit => e
