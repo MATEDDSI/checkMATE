@@ -8,7 +8,7 @@ Usage:
 	#{__FILE__} consulta <juego>
 	#{__FILE__} consulta <juego> empate
 	#{__FILE__} consulta <juego> diferencia <numero>
-	#{__FILE__} consulta <juego> restriccion <atributo> <valor>
+	#{__FILE__} consulta <juego> donde <atributo> <valor>
 	#{__FILE__} consulta ID <numero>
 	
 Options:
@@ -33,7 +33,7 @@ begin
 			Consulta.consultarCondicion(args["<juego>"],'diferencia',0);
 		elsif args["diferencia"]
 			Consulta.consultarCondicion(args["<juego>"],args["diferencia"],args["<numero>"]);
-		elsif args["restriccion"]
+		elsif args["donde"]
 			Consulta.restriccion(args["<juego>"],args["<atributo>"],args["<valor>"])
 		elsif args["ID"]
 			Consulta.consultarID(args["<numero>"]);
