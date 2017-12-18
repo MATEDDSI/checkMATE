@@ -23,7 +23,12 @@ module Consejos
 				val.each do |v|
 					valor_sum_pt[v["valor"]] += v["puntuacion"].to_i
 				end
-				res[a["nombre"]] = (valor_sum_pt.max_by {|k, v| v}).first 
+				valores_ordenados = valor_sum_pt.max_by {|k, v| v}
+				if not valores_ordenados == nil
+					res[a["nombre"]] = valores_ordenados.first 
+				else
+					res[a["nombre"]] = "no hay suficientes datos"
+				end
 			end
 		end
 		res
