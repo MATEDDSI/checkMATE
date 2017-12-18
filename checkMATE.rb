@@ -6,6 +6,10 @@ checkMATE.
 Usage:
 	#{__FILE__} consejo contra <jugador> <juego>
 	#{__FILE__} consulta <juego>
+	#{__FILE__} consulta <juego> empate
+	#{__FILE__} consulta <juego> diferencia <numero>
+	#{__FILE__} consulta <juego> restriccion <atributo> <valor>
+	#{__FILE__} consulta ID <numero>
 	
 Options:
 	-h --help	Muestra esta pantalla.
@@ -17,16 +21,27 @@ DOCOPT
 begin
 	require "docopt"
 	args = Docopt::docopt(doc)
+
 	if args["consejo"]
 		require_relative "consejos"
 		Consejos.maneja_argumentos(args);
 	end
+
 	if args["consulta"]
 		require_relative "consulta"
-		Consulta.consultar(args["<juego>"]);
-#		Consulta.consultarCondicion(args["<juego>"],args["<diferencia/igual>"],args["<numero>"]);
-#		Consulta.restriccion(args["<juego>"],args["<atributo>"],args["<valor>"])
+		if args["empate"]
+			Consulta.consultarCondicion(args["<juego>"],'diferencia',0);
+		elsif args["diferencia"]
+			Consulta.consultarCondicion(args["<juego>"],args["diferencia"],args["<numero>"]);
+		elsif args["restriccion"]
+			Consulta.restriccion(args["<juego>"],args["<atributo>"],args["<valor>"])
+		elsif args["ID"]
+			Consulta.consultarID(args["<numero>"]);
+		else
+			Consulta.consultar(args["<juego>"]);
+		end
 	end
+
 rescue Docopt::Exit => e
 	puts e.message
 end
