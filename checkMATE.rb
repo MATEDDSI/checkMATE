@@ -11,7 +11,7 @@ Usage:
 	#{__FILE__} consulta <juego> diferencia <numero>
 	#{__FILE__} consulta <juego> donde <atributo> <valor>
 	#{__FILE__} consulta ID <numero>
-	#{__FILE__} inserta <juego> <nombre_jugador_1> <puntuacion_1> <nombre_jugador_2> <puntuacion_2> ...
+	#{__FILE__} inserta <juego> <nombre_jugador_1> <puntuacion_1> ...
 	#{__FILE__} estadistica2D <juego> <nombre_atributo_1>
 
 Options:
@@ -20,10 +20,9 @@ Options:
 
 DOCOPT
 
-
 begin
 	require "docopt"
-	args = Docopt::docopt(doc)
+	args = Docopt::docopt(doc, {:options_first=>true})
 
 	if args["consejo"]
 		require_relative "consejos"
@@ -91,6 +90,8 @@ begin
 
 	end
 
-rescue Docopt::Exit => e
+rescue Docopt::Exit  => e
+	puts e.message
+rescue SQLite3::ConstraintException => e
 	puts e.message
 end

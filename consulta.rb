@@ -34,9 +34,7 @@ module Consulta
 
 	def Consulta.mostrarID(id)
 		nomypun_list = sacarNombreJugsPuntuacionesYFecha(id["idPartida"])
-		if( nomypun_list.empty? )
-			puts "No existe la Partida #{id["idPartida"]}."
-		else
+		if( !nomypun_list.empty? )
 			puts "--Partida #{id["idPartida"]}--"
 			print "   " , "Jugadores: "
 			cont = 1
