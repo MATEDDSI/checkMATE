@@ -13,11 +13,11 @@ module Consulta
 		res_id = []
 		id_list = sacarIDs(juego)
 		id_list.each do |id_i|
-			nomypun_list = sacarNombreJugsYPuntuaciones(id_i["idPartida"])
+			nomypun_list = sacarNombreJugsPuntuacionesYFecha(id_i["idPartida"])
 			if nomypun_list.length == 2
 				p_a = nomypun_list[0]["puntuacion"].to_i
 				p_b = nomypun_list[1]["puntuacion"].to_i
-				if( (p_a - p_b)*(p_a - p_b) <= numero.to_i*numero.to_i)
+				if( (p_a - p_b)*(p_a - p_b) == numero.to_i*numero.to_i)
 					res_id << id_i
 				end
 			end
@@ -61,7 +61,7 @@ module Consulta
 				cont = cont +1
 			end
 			puts
-		
+
 			nomypun_list.each do |nomypun_i|
 				puts "     " + nomypun_i["nombreJugador"] + ":"
 				atrval_list = sacarAtributosValores(id["idPartida"],nomypun_i["nombreJugador"])
@@ -72,7 +72,7 @@ module Consulta
 
 			puts "   " + "Fecha: " + nomypun_list[0]["fecha"]
 		end
-		
+
 	end
 
 	def Consulta.restriccion(juego,atributo,valor)
@@ -144,7 +144,7 @@ module Consulta
 			WHERE nombreJuego = '#{juego}'
 			INTERSECT
 			SELECT idPartida FROM rellena
-			WHERE nombreAtributo = '#{atributo}' AND valor = '#{valor_p}'; 
+			WHERE nombreAtributo = '#{atributo}' AND valor = '#{valor_p}';
 			QUERY
 		rescue SQLite3::Exception => e
 			puts "Error al acceder a la base de datos: "
